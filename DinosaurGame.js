@@ -15,6 +15,8 @@ let dinoHeight = 94;
 let dinoX = 50;
 let dinoY = boardHeight - dinoHeight;
 let dinoImg;
+let dinoImg2;
+let dinoImg3;
 
 let dino = {
   x : dinoX,
@@ -48,6 +50,9 @@ let jumpHeight = 9;
 //game
 let gameover = false;
 let score = 0;
+let firstTime = true;
+let setIntervalPlaceCactusID = null;
+let stepCounter = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                  action                                    //
@@ -60,13 +65,17 @@ window.onload = ()=>{
 
   context = board.getContext("2d");// use for drawing on the board
 
+
+  context.font = "30px courier";
+    context.fillText("press S to start the game",boardWidth/2-240,boardHeight/2+10);
+
   //draw the dinosaur
   dinoImg = new Image();
   dinoImg.src = "./img/dino.png";
-
-  
-
-  
+  dinoImg2 = new Image();
+  dinoImg2.src = "./img/dino-run1.png";
+  dinoImg3 = new Image();
+  dinoImg3.src = "./img/dino-run2.png";
 
   //draw cactus
   cactus1Img = new Image();
@@ -79,22 +88,53 @@ window.onload = ()=>{
   cactus3Img.src = "./img/cactus3.png";
 
   document.addEventListener("keydown", startGame);
+  document.addEventListener("keydown", resetGame);
+
+  document.addEventListener("keydown",moveDino);
+  document.addEventListener("mousedown",moveDino);
 }
 
 function startGame(e){
   if(e.type === "keydown" && e.code === "KeyS"){
+    
+    if(firstTime == true){
+      dinoImg.src = "./img/dino.png";
+      context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
+      requestAnimationFrame(update);
+      setIntervalPlaceCactusID = setInterval(placeCactus,1000);
+    }
+    firstTime = false;
+  }
+}
+
+function resetGame(e){
+  if(e.type === "keydown" && e.code === "KeyR"){
+    
+    dinoImg.src = "./img/dino.png";
+
+    context.clearRect(0,0,boardWidth,boardHeight);
+    /*if(setIntervalPlaceCactusID !== null){
+      clearInterval(setIntervalPlaceCactusID);
+      setIntervalPlaceCactusID = null;
+    }*/
+
+    score = 0;
+    velocityY = 0;
+    cactusArray = [];
 
     context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
 
-    //setInterval(update,1000/60);
-    requestAnimationFrame(update);
-    //setTimeout(update,1000/60);
+    console.log(`1${gameover}`);
+    if(firstTime == true || gameover == true){
+      gameover = false;
+      console.log(`${gameover}`);
+      requestAnimationFrame(update);
+      //setIntervalPlaceCactusID = setInterval(placeCactus,1000);
+    }
+    firstTime = false;
 
-    setInterval(placeCactus,1000);
-
-    document.addEventListener("keydown",moveDino);
-    document.addEventListener("click",moveDino);
   }
+
 }
 
 function update(){
@@ -105,10 +145,22 @@ function update(){
   context.clearRect(0,0,boardWidth,boardHeight);
   //setTimeout(update,1000/60);
   requestAnimationFrame(update);
+  if(score%100 === 0 ||score%100 === 25 || score%100 === 50 || score%100 === 75)
+    {
+    stepCounter++;
+  }
   console.log(1);
   velocityY = velocityY + gravity;
   dino.y = Math.min(dino.y + velocityY , dinoY);
+  if(dino.y !== dinoY){
   context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
+  }
+  else if(stepCounter%2 === 0){
+    context.drawImage(dinoImg2,dino.x,dino.y,dino.width,dino.height);
+  }
+  else{
+    context.drawImage(dinoImg3,dino.x,dino.y,dino.width,dino.height);
+  }
   //requestAnimationFrame(update);
 
   //cactus
@@ -131,6 +183,10 @@ function update(){
       dinoImg.onload = ()=>{
         context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
       }
+      context.font = "50px courier";
+      context.fillText("Game Over",boardWidth/2-150,boardHeight/2+5);
+      context.font = "20px courier";
+      context.fillText("press R to restart",boardWidth/2-125,boardHeight/2+30);
     }
   }
 
@@ -156,17 +212,17 @@ function placeCactus(){
   }
 
   let determineNum = Math.random();
-  if(determineNum>0.9){
+  if(determineNum>0.8){
     cactus.img = cactus3Img;
     cactus.width = cactus3Width;
     cactusArray.push(cactus);
   }
-  else if(determineNum>0.7){
+  else if(determineNum>0.6){
     cactus.img = cactus2Img;
     cactus.width = cactus2Width;
     cactusArray.push(cactus);
   }
-  else if(determineNum>0.5){
+  else if(determineNum>0.3){
     cactus.img = cactus1Img;
     cactus.width = cactus1Width;
     cactusArray.push(cactus);
@@ -183,7 +239,7 @@ function moveDino(e){
     return;
   }
 
-  if((e.type === "click")||((e.type === "keydown")&&((e.code === "Space")||
+  if((e.type === "mousedown")||((e.type === "keydown")&&((e.code === "Space")||
     (e.code === "ArrowUp")||(e.code === "keyW")))){
       if(dinoY === dino.y){
         velocityY = -jumpHeight;
@@ -202,5 +258,5 @@ function detectCollisionForCactus(a,b){
   return a.x+5 < b.x + b.width - 5 &&
          a.x + a.width - 5 > b.x +5 &&
          a.y < b.y + b.height &&
-         a.y + a.height - 30 > b.y;
+         a.y + a.height - 20 > b.y;
 }
