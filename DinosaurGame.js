@@ -83,9 +83,8 @@ window.onload = ()=>{
 
 function startGame(e){
   if(e.type === "keydown" && e.code === "KeyS"){
-    dinoImg.onload = ()=>{
-      context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
-    }
+
+    context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
 
     //setInterval(update,1000/60);
     requestAnimationFrame(update);
