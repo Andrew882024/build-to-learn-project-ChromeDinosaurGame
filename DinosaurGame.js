@@ -2,6 +2,8 @@
 //                           data for the game                                //
 //////////////////////////////////////////////////////////////////////////////// 
 
+//test for github
+
 //board
 let board;
 let boardWidth = 950;
