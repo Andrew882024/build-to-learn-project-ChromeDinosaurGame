@@ -2,7 +2,6 @@
 //                           data for the game                                //
 //////////////////////////////////////////////////////////////////////////////// 
 
-//test for github
 
 //board
 let board;
@@ -65,13 +64,9 @@ window.onload = ()=>{
   dinoImg = new Image();
   dinoImg.src = "./img/dino.png";
 
-  dinoImg.onload = ()=>{
-    context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
-  }
+  
 
-  //setInterval(update,1000/60);
-  requestAnimationFrame(update);
-  //setTimeout(update,1000/60);
+  
 
   //draw cactus
   cactus1Img = new Image();
@@ -83,10 +78,24 @@ window.onload = ()=>{
   cactus3Img = new Image();
   cactus3Img.src = "./img/cactus3.png";
 
-  setInterval(placeCactus,1000);
+  document.addEventListener("keydown", startGame);
+}
 
-  document.addEventListener("keydown",moveDino);
-  document.addEventListener("click",moveDino);
+function startGame(e){
+  if(e.type === "keydown" && e.code === "KeyS"){
+    dinoImg.onload = ()=>{
+      context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
+    }
+
+    //setInterval(update,1000/60);
+    requestAnimationFrame(update);
+    //setTimeout(update,1000/60);
+
+    setInterval(placeCactus,1000);
+
+    document.addEventListener("keydown",moveDino);
+    document.addEventListener("click",moveDino);
+  }
 }
 
 function update(){
