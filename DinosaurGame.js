@@ -69,7 +69,7 @@ let jumpHeight = 9;
 let gameover = false;
 let score = 0;
 let firstTime = true;
-let setIntervalPlaceCactusID = null;
+let setIntervalPlaceCactusAndBirdID = null;
 let stepCounter = 0;
 let flyCounter = 0;
 
@@ -126,9 +126,10 @@ function startGame(e){
       dinoImg.src = "./img/dino.png";
       context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
       requestAnimationFrame(update);
-      setIntervalPlaceCactusID = setInterval(placeCactus,1000);
+      setIntervalPlaceCactusAndBirdID = setInterval(placeCactusAndBird,1000);
     }
     firstTime = false;
+
   }
 }
 
@@ -138,10 +139,11 @@ function resetGame(e){
     dinoImg.src = "./img/dino.png";
 
     context.clearRect(0,0,boardWidth,boardHeight);
-    /*if(setIntervalPlaceCactusID !== null){
-      clearInterval(setIntervalPlaceCactusID);
-      setIntervalPlaceCactusID = null;
-    }*/
+    if(setIntervalPlaceCactusAndBirdID !== null){
+      clearInterval(setIntervalPlaceCactusAndBirdID);
+      setIntervalPlaceCactusAndBirdID = null;
+    }
+    setIntervalPlaceCactusAndBirdID = setInterval(placeCactusAndBird,1000);
 
     score = 0;
     velocityY = 0;
@@ -155,7 +157,7 @@ function resetGame(e){
       gameover = false;
       console.log(`${gameover}`);
       requestAnimationFrame(update);
-      //setIntervalPlaceCactusID = setInterval(placeCactus,1000);
+      //setIntervalPlaceCactusAndBirdID = setInterval(placeCactusAndBird,1000);
     }
     firstTime = false;
 
@@ -167,10 +169,21 @@ function update(){
   if(gameover == true){
     return;
   }
+
+  if(score === 500){
+    console.log(`500`);
+    clearInterval(setIntervalPlaceCactusAndBirdID);
+    setIntervalPlaceCactusAndBirdID = setInterval(placeCactusAndBird,800);
+  }
   //dino
   context.clearRect(0,0,boardWidth,boardHeight);
   //setTimeout(update,1000/60);
+  if(score < 1000){
   requestAnimationFrame(update);
+  }
+  else{
+    setTimeout(update,1000/300);
+  }
   if(score%100 === 0 ||score%100 === 25 || score%100 === 50 || score%100 === 75)
     {
     stepCounter++;
@@ -254,7 +267,8 @@ function update(){
 
 }
 
-function placeCactus(){
+//place cactus and bird
+function placeCactusAndBird(){
   if(gameover == true){
     return;
   }
@@ -296,7 +310,7 @@ function placeCactus(){
     width: birdWidth1,
     height: birdHeight1
   }
-  if(score>5000){
+  if(score>1000){
     if(determineNum<0.3&&determineNum>0.1){
       bird.img = birdImg1;
       birdArray.push(bird);
