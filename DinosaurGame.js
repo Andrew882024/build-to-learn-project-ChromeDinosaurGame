@@ -174,16 +174,14 @@ function update(){
     console.log(`500`);
     clearInterval(setIntervalPlaceCactusAndBirdID);
     setIntervalPlaceCactusAndBirdID = setInterval(placeCactusAndBird,800);
+    velocityX = -4.5;
   }
   //dino
   context.clearRect(0,0,boardWidth,boardHeight);
   //setTimeout(update,1000/60);
-  if(score < 1000){
+  
   requestAnimationFrame(update);
-  }
-  else{
-    setTimeout(update,1000/300);
-  }
+  
   if(score%100 === 0 ||score%100 === 25 || score%100 === 50 || score%100 === 75)
     {
     stepCounter++;
