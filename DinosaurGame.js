@@ -41,6 +41,24 @@ let cactus1Img;
 let cactus2Img;
 let cactus3Img;
 
+//bird
+let birdArray = [];
+let birdHeight1 = 68;
+let birdWidth1 = 97;
+let birdX1 = 958;
+let birdY1 = Math.random() * (boardHeight - birdHeight1 - 100);
+
+
+let birdImg1;
+let birdImg2;
+
+let bird1 = {
+  x : birdX1,
+  y : birdY1,
+  width : birdWidth1,
+  height : birdHeight1
+}
+
 //physics
 let velocityX = -3;
 let velocityY = 0;
@@ -53,6 +71,7 @@ let score = 0;
 let firstTime = true;
 let setIntervalPlaceCactusID = null;
 let stepCounter = 0;
+let flyCounter = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                  action                                    //
@@ -86,6 +105,12 @@ window.onload = ()=>{
 
   cactus3Img = new Image();
   cactus3Img.src = "./img/cactus3.png";
+
+  //draw bird
+  birdImg1 = new Image();
+  birdImg1.src = "./img/bird1.png";
+  birdImg2 = new Image();
+  birdImg2.src = "./img/bird2.png";
 
   document.addEventListener("keydown", startGame);
   document.addEventListener("keydown", resetGame);
@@ -121,6 +146,7 @@ function resetGame(e){
     score = 0;
     velocityY = 0;
     cactusArray = [];
+    birdArray = [];
 
     context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
 
@@ -149,7 +175,7 @@ function update(){
     {
     stepCounter++;
   }
-  console.log(1);
+  //console.log(1);
   velocityY = velocityY + gravity;
   dino.y = Math.min(dino.y + velocityY , dinoY);
   if(dino.y !== dinoY){
@@ -173,6 +199,7 @@ function update(){
     
     let cactus = cactusArray[i];
     cactus.x = cactus.x + velocityX;
+    
     context.drawImage(cactus.img,cactus.x,cactus.y,cactus.width,cactus.height);
     
 
@@ -189,6 +216,35 @@ function update(){
       context.fillText("press R to restart",boardWidth/2-125,boardHeight/2+30);
     }
   }
+
+  //bird
+  if(score%100 === 33 ||score%100 === 66 || score%100 === 99){
+    flyCounter++;
+  }
+  for(let i = 0; i<birdArray.length; i++){
+    let bird = birdArray[i];
+    bird.x = bird.x + velocityX;
+    if(flyCounter%2 === 0){
+      context.drawImage(birdImg1,bird.x,bird.y,bird.width,bird.height);
+    }
+    else{
+      context.drawImage(birdImg2,bird.x+3,bird.y-15,bird.width,bird.height);
+    }   
+
+    if(detectCollisionForCactus(dino,bird)){
+      console.log(2);
+      gameover = true;
+      dinoImg.src = "./img/dino-dead.png";
+      dinoImg.onload = ()=>{
+        context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
+      }
+      context.font = "50px courier";
+      context.fillText("Game Over",boardWidth/2-150,boardHeight/2+5);
+      context.font = "20px courier";
+      context.fillText("press R to restart",boardWidth/2-125,boardHeight/2+30);
+    }
+  }
+  console.log(`birdArray.length:${birdArray.length}`);
 
   //score
   context.fillStyle = "black";
@@ -227,10 +283,30 @@ function placeCactus(){
     cactus.width = cactus1Width;
     cactusArray.push(cactus);
   }
+  
 
   if(cactusArray.length>8){
     cactusArray.shift();
   }
+
+  let bird = {
+    img : null,
+    x: birdX1,
+    y: 100 + Math.random() * (boardHeight - birdHeight1 - 200),
+    width: birdWidth1,
+    height: birdHeight1
+  }
+  if(score>5000){
+    if(determineNum<0.3&&determineNum>0.1){
+      bird.img = birdImg1;
+      birdArray.push(bird);
+    }
+
+    if(birdArray.length>8){
+      birdArray.shift();
+    }
+  }
+
 }
 
 //dino move
