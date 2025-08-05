@@ -90,7 +90,7 @@ window.onload = ()=>{
 
 
   context.font = "30px courier";
-    context.fillText("press R to start the game",boardWidth/2-240,boardHeight/2+10);
+    context.fillText("click to start the game",boardWidth/2-220,boardHeight/2+10);
 
   //draw the dinosaur
   dinoImg = new Image();
@@ -228,7 +228,7 @@ function update(){
       context.font = "50px courier";
       context.fillText("Game Over",boardWidth/2-150,boardHeight/2+5);
       context.font = "20px courier";
-      context.fillText("press R to restart",boardWidth/2-125,boardHeight/2+30);
+      context.fillText("click to restart",boardWidth/2-110,boardHeight/2+30);
     }
   }
 
@@ -256,7 +256,7 @@ function update(){
       context.font = "50px courier";
       context.fillText("Game Over",boardWidth/2-150,boardHeight/2+5);
       context.font = "20px courier";
-      context.fillText("press R to restart",boardWidth/2-125,boardHeight/2+30);
+      context.fillText("click to restart",boardWidth/2-110,boardHeight/2+30);
     }
   }
   console.log(`birdArray.length:${birdArray.length}`);
