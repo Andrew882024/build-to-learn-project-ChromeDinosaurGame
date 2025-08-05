@@ -116,9 +116,9 @@ window.onload = ()=>{
   birdImg2 = new Image();
   birdImg2.src = "./img/bird2.png";
 
-
+  document.getElementById("board").addEventListener("click",StartOrRestartTheGame);
   document.addEventListener("keydown", StartOrRestartTheGame);
-  document.addEventListener("click", StartOrRestartTheGame);
+  //document.addEventListener("click", StartOrRestartTheGame);
 
   document.addEventListener("keydown",moveDino);
   document.addEventListener("mousedown",moveDino);
