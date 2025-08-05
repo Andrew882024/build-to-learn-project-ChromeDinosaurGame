@@ -128,7 +128,7 @@ window.onload = ()=>{
 
 function StartOrRestartTheGame(e){
   if((readyToStartOrReset == true || gameover == true) && 
-    ((e.type === "keydown" && e.code === "KeyR")||(e.type === "click"))){
+    ((e.type === "keydown" && e.code === "Space")||(e.type === "click"))){
     readyToStartOrReset = false;
 
     if(firstTime == true){
