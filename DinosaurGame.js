@@ -7,7 +7,7 @@
 
 //board
 let board;
-let boardWidth = 950;
+let boardWidth = 850;
 let boardHeight = 350;
 let context;
 
@@ -75,6 +75,7 @@ let setIntervalPlaceCactusAndBirdID = null;
 let stepCounter = 0;
 let flyCounter = 0;
 let speedingUpScore = 500;
+let readyToStartOrReset = true;
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                  action                                    //
@@ -89,7 +90,7 @@ window.onload = ()=>{
 
 
   context.font = "30px courier";
-    context.fillText("press S to start the game",boardWidth/2-240,boardHeight/2+10);
+    context.fillText("press R to start the game",boardWidth/2-240,boardHeight/2+10);
 
   //draw the dinosaur
   dinoImg = new Image();
@@ -115,19 +116,21 @@ window.onload = ()=>{
   birdImg2 = new Image();
   birdImg2.src = "./img/bird2.png";
 
-  document.addEventListener("keydown", startGame);
-  document.addEventListener("keydown", resetGame);
+
+  document.addEventListener("keydown", StartOrRestartTheGame);
+  document.addEventListener("click", StartOrRestartTheGame);
 
   document.addEventListener("keydown",moveDino);
   document.addEventListener("mousedown",moveDino);
 }
 
-function startGame(e){
-  if(e.type === "keydown" && e.code === "KeyS"){
 
-    speedingUpScore = 500;
-    velocityX = -3;
-    
+
+function StartOrRestartTheGame(e){
+  if((readyToStartOrReset == true || gameover == true) && 
+    ((e.type === "keydown" && e.code === "KeyR")||(e.type === "click"))){
+    readyToStartOrReset = false;
+
     if(firstTime == true){
       dinoImg.src = "./img/dino.png";
       context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
@@ -136,12 +139,6 @@ function startGame(e){
     }
     firstTime = false;
 
-  }
-}
-
-function resetGame(e){
-  if(e.type === "keydown" && e.code === "KeyR"){
-    
     dinoImg.src = "./img/dino.png";
 
     context.clearRect(0,0,boardWidth,boardHeight);
