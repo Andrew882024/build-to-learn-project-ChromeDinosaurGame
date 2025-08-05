@@ -74,6 +74,7 @@ let firstTime = true;
 let setIntervalPlaceCactusAndBirdID = null;
 let stepCounter = 0;
 let flyCounter = 0;
+let speedingUpScore = 500;
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                  action                                    //
@@ -123,6 +124,9 @@ window.onload = ()=>{
 
 function startGame(e){
   if(e.type === "keydown" && e.code === "KeyS"){
+
+    speedingUpScore = 500;
+    velocityX = -3;
     
     if(firstTime == true){
       dinoImg.src = "./img/dino.png";
@@ -151,7 +155,8 @@ function resetGame(e){
     velocityY = 0;
     cactusArray = [];
     birdArray = [];
-
+    speedingUpScore = 500;
+    velocityX = -3;
     context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
 
     console.log(`1${gameover}`);
@@ -175,11 +180,15 @@ function update(){
     return;
   }
 
-  if(score === 500){
-    console.log(`500`);
+  //speed up the game
+
+  if(score === speedingUpScore){
+    console.log(`speed up:${speedingUpScore}`);
     clearInterval(setIntervalPlaceCactusAndBirdID);
-    setIntervalPlaceCactusAndBirdID = setInterval(placeCactusAndBird,800);
-    velocityX = -4.5;
+    setIntervalPlaceCactusAndBirdID = setInterval(placeCactusAndBird,Math.max(300,1000 - speedingUpScore/7));
+    velocityX = velocityX - 1;
+    velocityX = Math.max(velocityX,-10);
+    speedingUpScore += 500;
   }
   //dino
   context.clearRect(0,0,boardWidth,boardHeight);
@@ -344,12 +353,12 @@ function detectCollisionForCactus(a,b){
   return a.x+5 < b.x + b.width - 5 &&
          a.x + a.width - 5 > b.x +5 &&
          a.y < b.y + b.height &&
-         a.y + a.height - 20 > b.y;
+         a.y + a.height - 15 > b.y;
 }
 
 function detectCollisionForBird(a,b){
-  return a.x+5 < b.x + b.width - 5 &&
+  return a.x + 5 < b.x + b.width - 5 &&
          a.x + a.width - 5 > b.x + 5&&
-         a.y < b.y + b.height + 10 &&
+         a.y + 10 < b.y + b.height - 5 &&
          a.y + a.height - 20 > b.y;
 }
