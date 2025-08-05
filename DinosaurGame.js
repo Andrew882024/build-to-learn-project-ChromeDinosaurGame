@@ -212,7 +212,6 @@ function update(){
     cactus.x = cactus.x + velocityX;
     
     context.drawImage(cactus.img,cactus.x,cactus.y,cactus.width,cactus.height);
-    
 
     if(detectCollisionForCactus(dino,cactus)){
       console.log(2);
