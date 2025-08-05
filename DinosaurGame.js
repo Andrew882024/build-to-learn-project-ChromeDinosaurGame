@@ -45,8 +45,8 @@ let cactus3Img;
 
 //bird
 let birdArray = [];
-let birdHeight1 = 68;
-let birdWidth1 = 97;
+let birdHeight1 = 68*0.75;
+let birdWidth1 = 97*0.75;
 let birdX1 = 958;
 let birdY1 = Math.random() * (boardHeight - birdHeight1 - 100);
 
@@ -166,6 +166,9 @@ function resetGame(e){
   }
 
 }
+////////////////////////////////////////////////////////////////////////////////
+//                                functions                                   //
+////////////////////////////////////////////////////////////////////////////////
 
 function update(){
   if(gameover == true){
@@ -204,15 +207,9 @@ function update(){
 
   //cactus
   for(let i = 0; i<cactusArray.length; i++){
-    /*
-    cactusArray[i].x = cactusArray[i].x + velocityX;
-    context.drawImage(cactusArray[i].img,cactusArray[i].x,cactusArray[i].y,
-      cactusArray[i].width,cactusArray[i].height);
-    */
     
     let cactus = cactusArray[i];
     cactus.x = cactus.x + velocityX;
-    
     context.drawImage(cactus.img,cactus.x,cactus.y,cactus.width,cactus.height);
 
     if(detectCollisionForCactus(dino,cactus)){
@@ -243,7 +240,7 @@ function update(){
       context.drawImage(birdImg2,bird.x+3,bird.y-15,bird.width,bird.height);
     }   
 
-    if(detectCollisionForCactus(dino,bird)){
+    if(detectCollisionForBird(dino,bird)){
       console.log(2);
       gameover = true;
       dinoImg.src = "./img/dino-dead.png";
@@ -305,7 +302,7 @@ function placeCactusAndBird(){
   let bird = {
     img : null,
     x: birdX1,
-    y: 100 + Math.random() * (boardHeight - birdHeight1 - 200),
+    y: 100 + Math.random() * (boardHeight - birdHeight1 - 100),
     width: birdWidth1,
     height: birdHeight1
   }
@@ -347,5 +344,12 @@ function detectCollisionForCactus(a,b){
   return a.x+5 < b.x + b.width - 5 &&
          a.x + a.width - 5 > b.x +5 &&
          a.y < b.y + b.height &&
+         a.y + a.height - 20 > b.y;
+}
+
+function detectCollisionForBird(a,b){
+  return a.x+5 < b.x + b.width - 5 &&
+         a.x + a.width - 5 > b.x + 5&&
+         a.y < b.y + b.height + 10 &&
          a.y + a.height - 20 > b.y;
 }
