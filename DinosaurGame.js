@@ -4,7 +4,7 @@
 //                           data for the game                                //
 //////////////////////////////////////////////////////////////////////////////// 
 
-
+console.log("bug fix 1");
 //board
 let board;
 let boardWidth = 850;
@@ -118,7 +118,6 @@ window.onload = ()=>{
 
   document.getElementById("board").addEventListener("click",StartOrRestartTheGame);
   document.addEventListener("keydown", StartOrRestartTheGame);
-  //document.addEventListener("click", StartOrRestartTheGame);
 
   document.addEventListener("keydown",moveDino);
   document.addEventListener("mousedown",moveDino);
@@ -134,7 +133,8 @@ function StartOrRestartTheGame(e){
     if(firstTime == true){
       dinoImg.src = "./img/dino.png";
       context.drawImage(dinoImg,dino.x,dino.y,dino.width,dino.height);
-      requestAnimationFrame(update);
+      //requestAnimationFrame(update);
+      setTimeout(update,1000/160);
       setIntervalPlaceCactusAndBirdID = setInterval(placeCactusAndBird,1000);
     }
     firstTime = false;
@@ -160,7 +160,8 @@ function StartOrRestartTheGame(e){
     if(firstTime == true || gameover == true){
       gameover = false;
       console.log(`${gameover}`);
-      requestAnimationFrame(update);
+      //requestAnimationFrame(update);
+      setTimeout(update,1000/160);
       //setIntervalPlaceCactusAndBirdID = setInterval(placeCactusAndBird,1000);
     }
     firstTime = false;
@@ -182,7 +183,7 @@ function update(){
   if(score === speedingUpScore){
     console.log(`speed up:${speedingUpScore}`);
     clearInterval(setIntervalPlaceCactusAndBirdID);
-    setIntervalPlaceCactusAndBirdID = setInterval(placeCactusAndBird,Math.max(300,1000 - speedingUpScore/7));
+    setIntervalPlaceCactusAndBirdID = setInterval(placeCactusAndBird,Math.max(600,1000 - speedingUpScore/7));
     velocityX = velocityX - 1;
     velocityX = Math.max(velocityX,-10);
     speedingUpScore += 500;
@@ -191,7 +192,8 @@ function update(){
   context.clearRect(0,0,boardWidth,boardHeight);
   //setTimeout(update,1000/60);
   
-  requestAnimationFrame(update);
+  //requestAnimationFrame(update);
+  setTimeout(update,1000/160);
   
   if(score%100 === 0 ||score%100 === 25 || score%100 === 50 || score%100 === 75)
     {
